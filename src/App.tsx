@@ -1,26 +1,24 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React from "react";
+import { Layout } from "antd";
 
-function App() {
+import { Login } from "./components/Login/Login";
+
+export const App = () => {
+  
+  const { Header, Footer, Content } = Layout;
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div className="login">
+      <Layout>
+        <Header>ThermoCo</Header>
+        <Content>
+          <div>
+            <Login />
+          </div>
+        </Content>
+        <Footer>Footer</Footer>
+      </Layout>
     </div>
   );
-}
+};
 
-export default App;
