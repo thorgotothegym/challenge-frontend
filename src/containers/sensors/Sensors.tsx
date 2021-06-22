@@ -1,32 +1,54 @@
-import { AxiosError, AxiosResponse } from "axios";
 import React, { useState, useEffect } from "react";
+import { Button } from "antd";
+import { AxiosError, AxiosResponse } from "axios";
+
 import { instance } from "../../request/http";
 
-import { getDataFromLocalStorage } from "../../utils/get";
 import { ISensor } from "./sensors.model";
+
+import styled from "styled-components";
 
 export const Sensors = () => {
   const [sensors, setSensors] = useState<ISensor[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
 
-  useEffect(() => {
-    const getSensors = async () => {
-      instance
-        .get<ISensor>(`api/v1/sensors/`)
-        .then((response: AxiosResponse) => {
-          setSensors(response.data);
-          setLoading(false)
-        })
-        .catch((error: AxiosError) => {
-            console.log('error', error)
-        });
-    };
+  const getSensors = async () => {
+    instance
+      .get<ISensor>(`api/v1/sensors/`)
+      .then((response: AxiosResponse) => {
+        setSensors(response.data);
+        setLoading(false);
+      })
+      .catch((error: AxiosError) => {
+        console.log("error", error);
+      });
+  };
+
+  /* useEffect(() => {
+    
     getSensors();
-  }, []);
+  }, []); */
 
   return (
     <>
-      {loading === true ? (
+      <WrapperOptions>
+        <h1>what do you want to do?</h1>
+        <Button
+          type="primary"
+          onClick={() => {
+            getSensors();
+          }}
+        >
+          Get all the sensors
+        </Button>
+        <Button type="primary" disabled={true}>Creates a sensor</Button>
+        <Button type="primary" disabled={true}>Get senor_id sensor data</Button>
+        <Button type="primary" disabled={true}>Replaces senor_id sensor data</Button>
+        <Button type="primary" disabled={true}>Partially updates senor_id sensor data</Button>
+        <Button type="primary" disabled={true}>Deletes the senor_id sensor</Button>
+      </WrapperOptions>
+      
+       {loading === true ? (
         "loading"
       ) : (
         <div>
@@ -47,3 +69,12 @@ export const Sensors = () => {
     </>
   );
 };
+
+const WrapperOptions = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  button {
+    margin: 5px;
+  }
+`;

@@ -2,12 +2,9 @@ import React, { useState, useEffect } from "react";
 import { Form, Input, Button } from "antd";
 import { useHistory } from "react-router-dom";
 
-import { AxiosResponse, AxiosError } from "axios";
+import axios, { AxiosResponse, AxiosError } from "axios";
 
 import styled from "styled-components";
-
-import { instance } from "../../request/http";
-import { useLocalStorage } from "../../hooks/localstorage";
 
 export interface LocalStorage {
   access_token: string;
@@ -46,7 +43,7 @@ export const Login = () => {
     setPassword(value);
   };
 
-  const onSubmit = () => {
+  const onSubmit = async () => {
     const config = {
       headers: {
         "Content-Type": "application/x-www-form-urlencoded",
@@ -55,16 +52,15 @@ export const Login = () => {
     const bodyFormat = new FormData();
     bodyFormat.set("username", user);
     bodyFormat.set("password", password);
-    instance
-      .post("http://127.0.0.1:8000/auth/login", bodyFormat, config)
-      .then((response: AxiosResponse) => {
-        window.localStorage.setItem("data", JSON.stringify(response.data));
-        history.push('/sensors');
-      })
-      .catch((error: AxiosError) => {
-        console.log('error', error)
-        history.push('/');
-      });
+    try {
+      const response = await axios.post(
+        `http://127.0.0.1:8000/auth/login`, bodyFormat, config)
+        console.log('reponse', response.data);
+        localStorage.setItem('data', JSON.stringify(response.data));
+        history.push('/sensors')
+    } catch (error) {
+      console.log("error", error);
+    }
   };
 
   return (
