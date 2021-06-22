@@ -1,13 +1,24 @@
 import React, { useState, useEffect } from "react";
-import { Form, Input, Button, Alert, Row, Col } from "antd";
+import { Form, Input, Button } from "antd";
+import { useHistory } from "react-router-dom";
+
+import { AxiosResponse, AxiosError } from "axios";
 
 import styled from "styled-components";
+
+import { instance } from "../../request/http";
+import { useLocalStorage } from "../../hooks/localstorage";
+
+export interface LocalStorage {
+  access_token: string;
+  token_type?: string;
+}
 
 export const Login = () => {
   const [user, setUser] = useState<string>("");
   const [password, setPassword] = useState<string>("");
 
-  const [error, setError] = useState<boolean>(false);
+  const history = useHistory();
 
   const layout = {
     labelCol: { span: 8 },
@@ -36,15 +47,29 @@ export const Login = () => {
   };
 
   const onSubmit = () => {
-    if (user === "test" && password === "1234") {
-      alert('allow')
-    } else {
-      setError(true);
-    }
+    const config = {
+      headers: {
+        "Content-Type": "application/x-www-form-urlencoded",
+      },
+    };
+    const bodyFormat = new FormData();
+    bodyFormat.set("username", user);
+    bodyFormat.set("password", password);
+    instance
+      .post("http://127.0.0.1:8000/auth/login", bodyFormat, config)
+      .then((response: AxiosResponse) => {
+        window.localStorage.setItem("data", JSON.stringify(response.data));
+        history.push('/sensors');
+      })
+      .catch((error: AxiosError) => {
+        console.log('error', error)
+        history.push('/');
+      });
   };
 
   return (
     <LoginWrapper>
+      {}
       <Form
         {...layout}
         name="basic"
