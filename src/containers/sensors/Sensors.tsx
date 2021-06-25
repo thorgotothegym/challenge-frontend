@@ -95,45 +95,22 @@ export const Sensors = () => {
       {loading === true ? (
         "loading"
       ) : (
-        <div>
-          {sensors.map((item: ISensor, id: number) => {
-            return (
-              <div key={id}>
-                <ul>
-                  <li>ID: {item.id}</li>
-                  <li>Description: {item.description}</li>
-                  <li>isActive: {item.isActive === true ? "True" : "False"}</li>
-                  <li>SampligPeriod: {item.samplingPeriod}</li>
-                </ul>
-              </div>
-            );
-          })}
-          <div>
-            <Modal
-              title="Basic Modal"
-              visible={isModalVisible}
-              onOk={handleOk}
-              onCancel={handleCancel}
-            >
-              <Form
-                name="basic"
-                onFinish={onFinish}
-                onFinishFailed={onFinishFailed}
-              >
-                <Input name="id" placeholder="id" type="number" />
-                <Input
-                  name="description"
-                  placeholder="description"
-                  onChange={ () => {}}
-                  type="text"
-                />
-                <Input
-                  name="samplingPeriod"
-                  placeholder="samplingPeriod"
-                  type="number"
-                />
-              </Form>
-            </Modal>
+        <div id="container">
+          <div id="one">
+            {sensors.map((item: ISensor, id: number) => {
+              return (
+                <div key={id}>
+                  <ul>
+                    <li>ID: {item.id}</li>
+                    <li>Description: {item.description}</li>
+                    <li>
+                      isActive: {item.isActive === true ? "True" : "False"}
+                    </li>
+                    <li>SampligPeriod: {item.samplingPeriod}</li>
+                  </ul>
+                </div>
+              );
+            })}
           </div>
         </div>
       )}
