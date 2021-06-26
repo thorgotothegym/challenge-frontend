@@ -9,23 +9,21 @@ export const App = () => {
   const { Header, Footer, Content } = Layout;
 
   return (
-    <div className="login">
-      <Layout>
-        <Header>ThermoCo</Header>
-        <Content>
-          <Router>
-            <Switch>
-              <Route exact path="/">
-                <Login />
-              </Route>
-              <Route path="/sensors">
-                <Sensors />
-              </Route>
-            </Switch>
-          </Router>
-        </Content>
-        <Footer>Footer</Footer>
-      </Layout>
-    </div>
+    <Layout>
+      <Header>ThermoCo</Header>
+      <Content>
+        <Router>
+          <Switch>
+            <Route exact path="/">
+              <Login />
+            </Route>
+            <Route path="/sensors">
+              <Sensors />
+            </Route>
+          </Switch>
+        </Router>
+      </Content>
+      <Footer>Footer</Footer>
+    </Layout>
   );
 };
