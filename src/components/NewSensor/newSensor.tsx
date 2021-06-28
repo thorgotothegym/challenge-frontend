@@ -78,7 +78,7 @@ export const CollectionCreateForm: React.FC<CollectionCreateFormProps> = ({
 
 interface ICollectionsPage {
   hasBeenCreated?: any;
-  updateName: (arg: any) => void;
+  updateName?: (arg: any) => void;
 }
 
 export const CollectionsPage = ({ hasBeenCreated }: ICollectionsPage) => {

@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from "react";
 import { Button, Spin } from "antd";
 
-import { CollectionsPage } from '../../components/NewSensor/newSensor';
+import { CollectionsPage } from "../../components/NewSensor/newSensor";
+import { GetSensorByID } from "../../components/GetSensor/GetSensorByID";
 
 import { instance } from "../../request/http";
 
@@ -13,24 +14,9 @@ export const Sensors = () => {
   const [sensors, setSensors] = useState<ISensor[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
 
-  const getSensors = async () => {
-    try {
-      const response = await instance.get<ISensor[]>(
-        `http://127.0.0.1:8000/api/v1/sensors/`
-      );
-      const data = await response.data;
-      setSensors(data);
-      setLoading(false);
-    } catch (error) {
-      console.log("error", error);
-    }
-  };
+  const [modal, setModal] = useState<boolean>(false);
 
-  const callGetSensors = () => {
-    getSensors();
-  }
-
-/*   useEffect(() => {
+  useEffect(() => {
     const getSensors = async () => {
       try {
         const response = await instance.get<ISensor[]>(
@@ -44,14 +30,24 @@ export const Sensors = () => {
       }
     };
     getSensors();
-  }, []); */
+  }, []);
+
+  const showModal = () => {
+    return <GetSensorByID />;
+  };
 
   return (
     <>
       <WrapperOptions>
         <h1>what do you want to do?</h1>
-        <Button onClick={getSensors}>List the Sensors</Button>
-        <CollectionsPage updateName={callGetSensors}  />
+        <CollectionsPage />
+        <Button
+          onClick={() => {
+            setModal(true)
+          }}
+        >
+          Get idSensor data
+        </Button>
       </WrapperOptions>
 
       {loading === true ? (
@@ -75,6 +71,7 @@ export const Sensors = () => {
                 );
               })}
             </ContainerList>
+            {modal === false ? 'falso' : <GetSensorByID />}
           </div>
         </div>
       )}
