@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { Layout } from "antd";
-import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
+import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
 
 import { Login } from "./components/Login/Login";
 import { Sensors } from "./containers/sensors/Sensors";
@@ -9,10 +9,10 @@ export const App = () => {
   const { Header, Footer, Content } = Layout;
 
   return (
-    <Layout>
-      <Header>ThermoCo</Header>
-      <Content>
-        <Router>
+    <Router>
+      <Layout>
+        <Header>ThermoCo</Header>
+        <Content>
           <Switch>
             <Route exact path="/">
               <Login />
@@ -21,9 +21,9 @@ export const App = () => {
               <Sensors />
             </Route>
           </Switch>
-        </Router>
-      </Content>
-      <Footer>Footer</Footer>
-    </Layout>
+        </Content>
+        <Footer>Footer</Footer>
+      </Layout>
+    </Router>
   );
 };

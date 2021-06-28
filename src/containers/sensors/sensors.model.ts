@@ -4,3 +4,9 @@ export interface ISensor {
     samplingPeriod: number;
     isActive: boolean;
 }
+export interface CollectionCreateFormProps {
+    visible: boolean;
+    onCreate: (values: ISensor) => void;
+    onCancel?: () => void;
+    hasBeenCreated?: boolean;
+  }

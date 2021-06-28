@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
-import { Modal, Button, Spin, Form } from "antd";
-import axios, { AxiosError, AxiosResponse } from "axios";
+import { Button, Spin } from "antd";
+
+import { CollectionsPage } from '../../components/NewSensor/newSensor';
 
 import { instance } from "../../request/http";
 
@@ -12,21 +13,24 @@ export const Sensors = () => {
   const [sensors, setSensors] = useState<ISensor[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
 
-  const [isModalVisible, setIsModalVisible] = useState(false);
-
-  const showModal = () => {
-    setIsModalVisible(true);
+  const getSensors = async () => {
+    try {
+      const response = await instance.get<ISensor[]>(
+        `http://127.0.0.1:8000/api/v1/sensors/`
+      );
+      const data = await response.data;
+      setSensors(data);
+      setLoading(false);
+    } catch (error) {
+      console.log("error", error);
+    }
   };
 
-  const handleOk = () => {
-    setIsModalVisible(false);
-  };
+  const callGetSensors = () => {
+    getSensors();
+  }
 
-  const handleCancel = () => {
-    setIsModalVisible(false);
-  };
-
-  useEffect(() => {
+/*   useEffect(() => {
     const getSensors = async () => {
       try {
         const response = await instance.get<ISensor[]>(
@@ -40,15 +44,14 @@ export const Sensors = () => {
       }
     };
     getSensors();
-  }, []);
+  }, []); */
 
   return (
     <>
       <WrapperOptions>
         <h1>what do you want to do?</h1>
-        <Button type="primary" onClick={showModal}>
-          Creates a sensor
-        </Button>
+        <Button onClick={getSensors}>List the Sensors</Button>
+        <CollectionsPage updateName={callGetSensors}  />
       </WrapperOptions>
 
       {loading === true ? (
@@ -56,7 +59,7 @@ export const Sensors = () => {
       ) : (
         <div id="container">
           <div>
-            <div id="one">
+            <ContainerList id="one">
               {sensors?.map((item: ISensor, id: number) => {
                 return (
                   <div key={id}>
@@ -71,19 +74,7 @@ export const Sensors = () => {
                   </div>
                 );
               })}
-            </div>
-          </div>
-          <div className="modal">
-            <Modal
-              title="Basic Modal"
-              visible={isModalVisible}
-              onOk={handleOk}
-              onCancel={handleCancel}
-            >
-              <p>Some contents...</p>
-              <p>Some contents...</p>
-              <p>Some contents...</p>
-            </Modal>
+            </ContainerList>
           </div>
         </div>
       )}
@@ -98,4 +89,10 @@ const WrapperOptions = styled.div`
   button {
     margin: 5px;
   }
+`;
+
+const ContainerList = styled.div`
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
 `;
